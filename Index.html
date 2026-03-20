@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سؤال مهم 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+font-family: ‘Tajawal’, sans-serif;
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+background: #fff5f8;
+overflow: hidden;
+position: relative;
+}
+
+/* floating hearts background */
+.bg-hearts {
+position: fixed;
+inset: 0;
+pointer-events: none;
+z-index: 0;
+}
+.bg-hearts span {
+position: absolute;
+font-size: 1.5rem;
+opacity: 0.12;
+animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+0%   { transform: translateY(110vh) rotate(0deg); opacity: 0.12; }
+100% { transform: translateY(-10vh) rotate(20deg); opacity: 0; }
+}
+
+/* card */
+.card {
+position: relative;
+z-index: 1;
+background: white;
+border-radius: 32px;
+padding: 52px 44px 44px;
+max-width: 420px;
+width: 90%;
+text-align: center;
+box-shadow: 0 20px 80px rgba(255, 100, 130, 0.18);
+border: 2px solid #ffe4ec;
+animation: popIn 0.6s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+@keyframes popIn {
+from { transform: scale(0.7) translateY(40px); opacity: 0; }
+to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.emoji-big {
+font-size: 4rem;
+display: block;
+margin-bottom: 12px;
+animation: bounce 1.8s ease-in-out infinite;
+}
+@keyframes bounce {
+0%,100% { transform: translateY(0); }
+50%      { transform: translateY(-10px); }
+}
+
+h1 {
+font-size: 1.9rem;
+font-weight: 900;
+color: #d63b6e;
+margin-bottom: 10px;
+line-height: 1.4;
+}
+
+.subtitle {
+color: #aaa;
+font-size: 0.95rem;
+margin-bottom: 36px;
+}
+
+/* buttons */
+.btns {
+display: flex;
+gap: 14px;
+justify-content: center;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.btn-yes {
+background: linear-gradient(135deg, #ff6b95, #e8305a);
+color: white;
+border: none;
+border-radius: 50px;
+padding: 16px 44px;
+font-size: 1.2rem;
+font-weight: 700;
+font-family: ‘Tajawal’, sans-serif;
+cursor: pointer;
+box-shadow: 0 8px 24px rgba(232, 48, 90, 0.35);
+transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-yes:hover {
+transform: scale(1.07);
+box-shadow: 0 12px 32px rgba(232, 48, 90, 0.45);
+}
+.btn-yes:active { transform: scale(0.97); }
+
+.btn-no {
+background: #f5f5f5;
+color: #bbb;
+border: 2px solid #eee;
+border-radius: 50px;
+padding: 14px 30px;
+font-size: 1rem;
+font-weight: 700;
+font-family: ‘Tajawal’, sans-serif;
+cursor: pointer;
+transition: all 0.12s;
+position: relative;
+}
+
+/* success screen */
+.success {
+display: none;
+animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1) both;
+}
+.success.show { display: block; }
+.card.success-mode { padding: 56px 44px; }
+
+.success-emoji {
+font-size: 5rem;
+display: block;
+margin-bottom: 16px;
+animation: heartPop 0.5s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes heartPop {
+from { transform: scale(0); }
+to   { transform: scale(1); }
+}
+
+.success h2 {
+font-size: 2rem;
+font-weight: 900;
+color: #d63b6e;
+margin-bottom: 16px;
+}
+
+.success p {
+font-size: 1.1rem;
+color: #666;
+line-height: 1.8;
+}
+
+/* confetti */
+.confetti-piece {
+position: fixed;
+width: 10px;
+height: 10px;
+border-radius: 2px;
+opacity: 0;
+animation: confettiFall 1.2s ease-in forwards;
+z-index: 999;
+}
+@keyframes confettiFall {
+0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* no button run away */
+.btn-no.hidden { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+</style>
+
+</head>
+<body>
+
+<!-- bg hearts -->
+
+<div class="bg-hearts" id="bgHearts"></div>
+
+<div class="card" id="card">
+
+  <!-- question screen -->
+
+  <div id="questionScreen">
+    <span class="emoji-big">🎁</span>
+    <h1>تبي عيدية؟ 👀</h1>
+    <p class="subtitle">فكر زين قبل ما تجاوب 😏</p>
+    <div class="btns">
+      <button class="btn-yes" onclick="onYes()">نعم 🥰</button>
+      <button class="btn-no" id="btnNo" onclick="disappear()">لا 🙄</button>
+    </div>
+  </div>
+
+  <!-- success screen -->
+
+  <div class="success" id="successScreen">
+    <span class="success-emoji">💝</span>
+    <h2>عيدك مبارك يا طيبة 🌙☘️</h2>
+    <p>
+      يا رب اجعل هذي السنة أحلى سنواتها<br>
+      وارزقها كل ما تتمنى 🤲<br><br>
+      مو كل عيدية فلوس 🌸<br>
+      الفلوس تأخذينها من أقاربج<br>
+      أنا ما أقدر أسوي غير هذي<br>
+      أتمنى تكون حلوة 🤍
+    </p>
+  </div>
+
+</div>
+
+<script>
+  // bg floating hearts
+  const bg = document.getElementById('bgHearts');
+  const emojis = ['❤️','🩷','💕','💖','🌸','✨','💝'];
+  for (let i = 0; i < 18; i++) {
+    const s = document.createElement('span');
+    s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.animationDuration = (6 + Math.random() * 8) + 's';
+    s.style.animationDelay = (Math.random() * 8) + 's';
+    s.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+    bg.appendChild(s);
+  }
+
+  // no button disappears
+  function disappear() {
+    const btn = document.getElementById('btnNo');
+    btn.style.opacity = '0';
+    btn.style.transition = 'opacity 0.3s';
+    btn.style.pointerEvents = 'none';
+  }
+
+  // yes
+  function onYes() {
+    // confetti
+    const colors = ['#ff6b95','#ffce54','#48cfad','#5d9cec','#fc6e51','#a0d468'];
+    for (let i = 0; i < 60; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.top = '-20px';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDelay = (Math.random() * 0.6) + 's';
+      c.style.animationDuration = (0.9 + Math.random() * 0.6) + 's';
+      c.style.width = c.style.height = (7 + Math.random() * 8) + 'px';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 2000);
+    }
+
+    document.getElementById('questionScreen').style.display = 'none';
+    const s = document.getElementById('successScreen');
+    s.classList.add('show');
+    document.getElementById('card').classList.add('success-mode');
+  }
+</script>
+
+</body>
+</html>
